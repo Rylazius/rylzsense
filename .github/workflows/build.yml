@@ -33,6 +33,9 @@ jobs:
         run: |
           cd build/libs
           export JAR=$(find . -regex '.*liquidbounce-b[0-9|.]*\.jar')
+          export LB_VERSION=$(echo $JAR | sed -r 's/.\/liquidbounce-([a-zA-Z][0-9]+)\.jar/\1/')
+          export MINECRAFT_VERSION='1.8.9'
+          echo Version: $LB_VERSION, Minecraft: $MINECRAFT_VERSION
           cp $JAR zip/liquidbounce.jar
           cd zip
           zip -r liquidbounce.zip *
