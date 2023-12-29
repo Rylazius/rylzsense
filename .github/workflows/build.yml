@@ -25,14 +25,14 @@ jobs:
           echo "VERSION=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
                     echo "DATE=$(date --date='${{ github.event.head_commit.timestamp }}' -u '+%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
       - name: Build
-        run: ./gradlew setupCiWorkspace && ./gradlew build
+        run: |
+          chmod +x gradlew
+          ./gradlew setupCiWorkspace
+          ./gradlew build
       - name: Upload artifact
         run: |
           cd build/libs
           export JAR=$(find . -regex '.*liquidbounce-b[0-9|.]*\.jar')
-          export LB_VERSION=$(echo $JAR | sed -r 's/.\/liquidbounce-([a-zA-Z][0-9]+)\.jar/\1/')
-          export MINECRAFT_VERSION='1.8.9'
-          echo Version: $LB_VERSION, Minecraft: $MINECRAFT_VERSION
           cp $JAR zip/liquidbounce.jar
           cd zip
           zip -r liquidbounce.zip *
