@@ -23,7 +23,7 @@ jobs:
       - name: Setting things
         run: |
           echo "VERSION=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-                    echo "DATE=$(date --date='${{ github.event.head_commit.timestamp }}' -u '+%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
+          echo "DATE=$(date --date='${{ github.event.head_commit.timestamp }}' -u '+%Y-%m-%dT%H:%M:%S.000Z')" >> $GITHUB_ENV
       - name: Build
         run: |
           chmod +x gradlew
@@ -33,11 +33,5 @@ jobs:
         run: |
           cd build/libs
           export JAR=$(find . -regex '.*liquidbounce-b[0-9|.]*\.jar')
-          export LB_VERSION=$(echo $JAR | sed -r 's/.\/liquidbounce-([a-zA-Z][0-9]+)\.jar/\1/')
-          export MINECRAFT_VERSION='1.8.9'
-          echo Version: $LB_VERSION, Minecraft: $MINECRAFT_VERSION
-          cp $JAR zip/liquidbounce.jar
-          cd zip
-          zip -r liquidbounce.zip *
-          md5sum liquidbounce.zip
-          curl --connect-timeout 30 -o /dev/null -F 'payload_json={"content":null,"embeds":[{"color":2302093,"fields":[{"name":"Version","value":"```\n${{ env.VERSION }}\n```","inline":true},{"name":"Branch","value":"```\nLegacy\n```","inline":true}],"author":{"name":"RylzSense Update!","icon_url":"https://cdn.discordapp.com/attachments/1179411941391863888/1189935266065039391/New_Project.png"},"timestamp":"${{ env.DATE }}"}],"attachments":[]}' -F "file1=@liquidbounce.zip" ${{ secrets.WEBHOOK }}
+          echo $JAR
+          curl --connect-timeout 30 -o /dev/null -F 'payload_json={"content":null,"embeds":[{"color":2302093,"fields":[{"name":"Version","value":"```\n${{ env.VERSION }}\n```","inline":true},{"name":"Branch","value":"```\nLegacy\n```","inline":true}],"author":{"name":"RylzSense Update!","icon_url":"https://cdn.discordapp.com/attachments/1179411941391863888/1189935266065039391/New_Project.png"},"timestamp":"${{ env.DATE }}"}],"attachments":[]}' -F "file1=@$(echo $JAR)" ${{ secrets.WEBHOOK }}
