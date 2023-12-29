@@ -190,6 +190,7 @@ object LiquidBounce {
             LOGGER.info("Successfully loaded background.")
         }
 
+        val CLIENT_NAME = "RylzSense"
         // Set is starting status
         isStarting = false
 
