@@ -1,5 +1,5 @@
 # RylzSense
-A free mixin-based injection hacked-client for Minecraft using Minecraft Forge, supporting version 1.8.9
-
-# Wtf is this liquidbounce fork?
-this is my attempt to make liquidbounce better at bypassing vietnamese servers
+[![img1](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://github.com/rylzsense/rylzsense)
+[![img2](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://github.com/rylzsense/rylzsense)
+[![img3](https://forthebadge.com/images/badges/ctrl-c-ctrl-v.svg)](https://github.com/rylzsense/rylzsense)
+[![img4](https://img.shields.io/badge/made%20by%20a%20retarded%20dev-32c494)](https://github.com/rylzsense/rylzsense)
