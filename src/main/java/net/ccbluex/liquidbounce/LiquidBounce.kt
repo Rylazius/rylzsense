@@ -63,7 +63,7 @@ object LiquidBounce {
     const val MINECRAFT_VERSION = "1.8.9"
     const val CLIENT_CLOUD = "https://cloud.liquidbounce.net/LiquidBounce"
 
-    val clientTitle = "RylzSense $clientCommit"
+    val clientTitle = "RylzSense $clientCommit | Development Build"
 
     var isStarting = true
 
@@ -91,7 +91,7 @@ object LiquidBounce {
     fun startClient() {
         isStarting = true
 
-        LOGGER.info("Starting $CLIENT_NAME $clientVersionText $clientCommit, by $CLIENT_CREATOR")
+        LOGGER.info("Starting $CLIENT_NAME")
 
         // Load languages
         loadLanguages()
