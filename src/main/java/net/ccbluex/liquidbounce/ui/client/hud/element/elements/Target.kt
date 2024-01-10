@@ -1,3 +1,9 @@
+/*
+ * LiquidBounce Hacked Client
+ * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
+ * https://github.com/CCBlueX/LiquidBounce/
+ */
+
 package net.ccbluex.liquidbounce.ui.client.hud.element.elements
 
 import net.ccbluex.liquidbounce.features.module.modules.combat.KillAura
@@ -20,7 +26,13 @@ import org.lwjgl.opengl.GL11.glColor4f
 import java.awt.Color
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-@@ -36,67 +46,417 @@ import kotlin.math.pow
+import java.util.*
+import kotlin.math.abs
+import kotlin.math.pow
+
+/**
+ * A target hud
+ */
 @ElementInfo(name = "Target")
 class Target : Element() {
 
