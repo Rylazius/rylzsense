@@ -36,6 +36,7 @@ import net.ccbluex.liquidbounce.tabs.HeadsTab
 import net.ccbluex.liquidbounce.ui.client.GuiClientConfiguration.Companion.updateClientWindow
 import net.ccbluex.liquidbounce.ui.client.altmanager.GuiAltManager.Companion.loadActiveGenerators
 import net.ccbluex.liquidbounce.ui.client.clickgui.ClickGui
+import net.ccbluex.liquidbounce.managers.CombatManager
 import net.ccbluex.liquidbounce.ui.client.hud.HUD
 import net.ccbluex.liquidbounce.ui.font.Fonts.loadFonts
 import net.ccbluex.liquidbounce.utils.Background
@@ -73,6 +74,7 @@ object LiquidBounce {
     val eventManager = EventManager
     val fileManager = FileManager
     val scriptManager = ScriptManager
+    lateinit var combatManager: CombatManager
 
     // HUD & ClickGUI
     val hud = HUD
