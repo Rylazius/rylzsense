@@ -8,7 +8,7 @@ package net.ccbluex.liquidbounce.event
 import net.minecraft.block.Block
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.multiplayer.WorldClient
-import net.minecraft.entity.Entity
+import net.minecraft.entity.*
 import net.minecraft.network.Packet
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.BlockPos
@@ -19,7 +19,7 @@ import net.minecraft.util.EnumFacing
  *
  * @param targetEntity Attacked entity
  */
-class AttackEvent(val targetEntity: Entity?) : Event()
+class AttackEvent(val targetEntity: Entity) : CancellableEvent()
 
 /**
  * Called when minecraft get bounding box of block
@@ -33,6 +33,10 @@ class BlockBBEvent(blockPos: BlockPos, val block: Block, var boundingBox: AxisAl
     val y = blockPos.y
     val z = blockPos.z
 }
+/**
+ * Gay target killed?
+ */
+class EntityKilledEvent(val targetEntity: EntityLivingBase) : Event()
 
 /**
  * Called when player clicks a block
