@@ -32,6 +32,7 @@ jobs:
       - name: Upload artifact
         run: |
           cd build/libs
-          export JAR=$(find . -regex '.*liquidbounce-b[0-9|.]*\.jar')
+          mv $(find . -regex '.*liquidbounce-b[0-9|.]*\.jar') RylzSense-${{ env.VERSION }}.jar
+          export JAR=$(find . -regex '.*rylzsense-[\w+]*\.jar')
           echo $JAR
           curl --connect-timeout 30 -o /dev/null -F 'payload_json={"content":null,"embeds":[{"color":2302093,"fields":[{"name":"Version","value":"```\n${{ env.VERSION }}\n```","inline":true},{"name":"Branch","value":"```\nLegacy\n```","inline":true}],"author":{"name":"RylzSense Update!","icon_url":"https://cdn.discordapp.com/attachments/1179411941391863888/1189935266065039391/New_Project.png"},"timestamp":"${{ env.DATE }}"}],"attachments":[]}' -F "file1=@$(echo $JAR)" ${{ secrets.WEBHOOK }}
