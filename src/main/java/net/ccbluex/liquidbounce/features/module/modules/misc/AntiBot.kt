@@ -6,6 +6,7 @@
 package net.ccbluex.liquidbounce.features.module.modules.misc
 
 import net.ccbluex.liquidbounce.event.AttackEvent
+import net.ccbluex.liquidbounce.LiquidBounce
 import net.ccbluex.liquidbounce.event.EventTarget
 import net.ccbluex.liquidbounce.event.PacketEvent
 import net.ccbluex.liquidbounce.event.WorldEvent
@@ -23,6 +24,8 @@ import net.minecraft.network.play.server.S0BPacketAnimation
 import net.minecraft.network.play.server.S13PacketDestroyEntities
 import net.minecraft.network.play.server.S14PacketEntity
 import net.minecraft.network.play.server.S20PacketEntityProperties
+import net.minecraft.network.play.server.S0CPacketSpawnPlayer
+
 
 object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
 
@@ -45,8 +48,10 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
     private val armor by BoolValue("Armor", false)
     private val ping by BoolValue("Ping", false)
     private val needHit by BoolValue("NeedHit", false)
+    private val spawnInCombatValue = BoolValue("SpawnInCombat", false)
     private val duplicateInWorld by BoolValue("DuplicateInWorld", false)
     private val duplicateInTab by BoolValue("DuplicateInTab", false)
+    private val reusedEntityIdValue = BoolValue("ReusedEntityId", false)
     private val properties by BoolValue("Properties", false)
 
     private val alwaysInRadius by BoolValue("AlwaysInRadius", false)
@@ -56,9 +61,11 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
     private val airList = mutableListOf<Int>()
     private val invalidGroundList = mutableMapOf<Int, Int>()
     private val swingList = mutableListOf<Int>()
+    private val spawnInCombat = mutableListOf<Int>()
     private val invisibleList = mutableListOf<Int>()
     private val propertiesList = mutableListOf<Int>()
     private val hitList = mutableListOf<Int>()
+    private val hasRemovedEntities = mutableListOf<Int>()
     private val notAlwaysInRadiusList = mutableListOf<Int>()
 
     fun isBot(entity: EntityLivingBase): Boolean {
@@ -77,6 +84,10 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
 
         if (livingTime && entity.ticksExisted < livingTimeTicks)
             return true
+
+        if(reusedEntityIdValue.get() && hasRemovedEntities.contains(entity.entityId)) {
+            return false
+        }    
 
         if (ground && entity.entityId !in groundList)
             return true
@@ -140,7 +151,7 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
         if (duplicateInTab &&
             mc.netHandler.playerInfoMap.count { entity.name == stripColor(it.getFullName()) } > 1)
             return true
-
+        
         if (alwaysInRadius && entity.entityId !in notAlwaysInRadiusList)
             return true
 
@@ -194,10 +205,16 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
                     && entity.entityId !in swingList)
                 swingList += entity.entityId
         }
-
+        if (packet is S0CPacketSpawnPlayer) {
+            val entity = mc.theWorld.getEntityByID(packet.entityID)
+            if(LiquidBounce.combatManager.inCombat && !hasRemovedEntities.contains(packet.entityID)) {
+                spawnInCombat.add(packet.entityID)
+            }
+        } 
         if (packet is S20PacketEntityProperties) {
             propertiesList += packet.entityId
         }
+        
 
         if (packet is S13PacketDestroyEntities) {
             for (entityID in packet.entityIDs) {
@@ -242,6 +259,8 @@ object AntiBot : Module("AntiBot", ModuleCategory.MISC) {
         invalidGroundList.clear()
         invisibleList.clear()
         notAlwaysInRadiusList.clear()
+        spawnInCombat.clear()
+        hasRemovedEntities.clear()
     }
 
 }
