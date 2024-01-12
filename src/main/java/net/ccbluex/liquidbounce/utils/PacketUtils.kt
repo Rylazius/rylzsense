@@ -13,18 +13,16 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.Packet
 import net.minecraft.network.play.INetHandlerPlayClient
-import net.minecraft.network.play.server.S0CPacketSpawnPlayer
-import net.minecraft.network.play.server.S0FPacketSpawnMob
-import net.minecraft.network.play.server.S0EPacketSpawnObject
-import net.minecraft.network.play.server.S12PacketEntityVelocity
-import net.minecraft.network.play.server.S14PacketEntity
-import net.minecraft.network.play.server.S18PacketEntityTeleport
+import net.minecraft.network.play.INetHandlerPlayServer
+import net.minecraft.network.play.server.*
 import kotlin.math.roundToInt
 
 // TODO: Remove annotations once all modules are converted to kotlin.
 object PacketUtils : MinecraftInstance(), Listenable {
 
     val queuedPackets = mutableListOf<Packet<*>>()
+
+    val packets = ArrayList<Packet<INetHandlerPlayServer>>()
 
     @EventTarget(priority = 2)
     fun onTick(event: TickEvent) {
@@ -126,6 +124,23 @@ object PacketUtils : MinecraftInstance(), Listenable {
             }
         }
     }
+
+    @JvmStatic
+    fun sendPacketNoEvent(packet: Packet<INetHandlerPlayServer>) {
+        packets.add(packet)
+        mc.netHandler.addToSendQueue(packet)
+    }
+
+    @JvmStatic
+    fun handlePacket(packet: Packet<INetHandlerPlayClient?>) {
+        val netHandler = mc.netHandler
+        if (packet is S38PacketPlayerListItem) {
+            netHandler.handlePlayerListItem(packet)
+        } else {
+            throw IllegalArgumentException("Unable to match packet type to handle: ${packet.javaClass}")
+        }
+    }
+    
 
     @JvmStatic
     @JvmOverloads
