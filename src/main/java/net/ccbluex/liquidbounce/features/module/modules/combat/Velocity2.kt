@@ -28,7 +28,7 @@ import kotlin.math.atan2
 import kotlin.math.sqrt
 
 
-object PlusVelocity : Module("PlusVelocity", ModuleCategory.COMBAT) {
+object PlusVelocity : Module("Velocity2", ModuleCategory.COMBAT) {
 
     /**
      * OPTIONS
