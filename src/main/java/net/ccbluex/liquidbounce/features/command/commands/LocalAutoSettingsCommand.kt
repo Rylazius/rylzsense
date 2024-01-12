@@ -17,7 +17,7 @@ import java.awt.Desktop
 import java.io.File
 import java.io.IOException
 
-object LocalAutoSettingsCommand : Command("localautosettings", "localsetting", "localsettings", "localconfig") {
+object LocalAutoSettingsCommand : Command("localautosettings", "localsetting", "localsettings", "localconfig", "config") {
     /**
      * Execute commands with provided [args]
      */
