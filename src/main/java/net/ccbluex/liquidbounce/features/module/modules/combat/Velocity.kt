@@ -233,13 +233,13 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
             }
 
             "grimlatest" -> {
-                if (onVelocity.get().equals("Always", true) || (onVelocity.get().equals("CombatManager", true) && MinusBounce.combatManager.inCombat)) {
+                if (onVelocity.get().equals("Always", true) || (onVelocity.get().equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
                     canCancel = true
                 }
                 if (canSpoof) {
                     val pos = mc.thePlayer.getPosition()
-                    PacketUtils.sendPacketNoEvent(C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround))
-                    PacketUtils.sendPacketNoEvent(C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, EnumFacing.DOWN))
+                    PacketUtils.sendPacket(C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround), false)
+                    PacketUtils.sendPacket(C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, EnumFacing.DOWN), false)
                     canSpoof = false
                 }
             }
