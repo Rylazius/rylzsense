@@ -32,8 +32,6 @@ import kotlin.math.atan2
 import kotlin.math.sqrt
 
 object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
-    private var canSpoof = false
-    private var canCancel = false
     /**
      * OPTIONS
      */
