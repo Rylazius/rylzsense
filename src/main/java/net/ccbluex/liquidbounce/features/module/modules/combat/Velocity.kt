@@ -18,28 +18,22 @@ import net.ccbluex.liquidbounce.utils.timing.MSTimer
 import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.FloatValue
 import net.ccbluex.liquidbounce.value.IntegerValue
-import net.ccbluex.liquidbounce.LiquidBounce
-import net.ccbluex.liquidbounce.utils.PacketUtils
-import net.ccbluex.liquidbounce.event.PacketEvent
 import net.ccbluex.liquidbounce.value.ListValue
 import net.minecraft.network.play.server.S12PacketEntityVelocity
 import net.minecraft.network.play.server.S32PacketConfirmTransaction
 import net.minecraft.network.play.server.S27PacketExplosion
-import net.minecraft.network.play.client.C07PacketPlayerDigging
-import net.minecraft.network.play.client.C03PacketPlayer.C06PacketPlayerPosLook
-import net.minecraft.network.play.server.S19PacketEntityStatus
-import net.minecraft.util.EnumFacing
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
 object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
+
     /**
      * OPTIONS
      */
     private val mode by ListValue(
         "Mode", arrayOf(
             "Simple", "AAC", "AACPush", "AACZero", "AACv4", "GrimS32",
-            "GrimLatest", "Reverse", "SmoothReverse", "Jump", "Glitch", "Legit"
+            "Reverse", "SmoothReverse", "Jump", "Glitch", "Legit"
         ), "Simple"
     )
 
@@ -90,9 +84,6 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
         }
     }
 
-    // GrimLatest
-    private val onVelocity by ListValue("OnVelocity", arrayOf("Always", "CombatManager", "PacketDamage"), "Always") { mode == "GrimLatest" }
-
     // TODO: Could this be useful in other modes? (Jump?)
     // Limits
     private val limitMaxMotionValue = BoolValue("LimitMaxMotion", false) { mode == "Simple" }
@@ -119,10 +110,6 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
     private var grimTCancel = 0
     private var updates = 0
 
-    // GrimLatest
-    private var canSpoof = false
-    private var canCancel = false
-
     // AACPush
     private var jump = false
 
@@ -137,8 +124,6 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
     }
 
     override fun onEnable() {
-        canSpoof = false
-        canCancel = false
         grimTCancel = 0
     }
 
@@ -230,18 +215,6 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
                 if (resetPersec > 0 && (updates >= 0 || updates >= resetPersec)) {
                     updates = 0
                     if (grimTCancel > 0) grimTCancel--
-                }
-            }
-
-            "grimlatest" -> {
-                if ((onVelocity.equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
-                    canCancel = true
-                }
-                if (canSpoof) {
-                    val pos = mc.thePlayer.getPosition()
-                    PacketUtils.sendPacket(C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround), false)
-                    PacketUtils.sendPacket(C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, EnumFacing.DOWN), false)
-                    canSpoof = false
                 }
             }
 
@@ -350,22 +323,6 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
                     if (packet is S32PacketConfirmTransaction && grimTCancel > 0) {
                         event.cancelEvent()
                         grimTCancel--
-                    }
-                }
-
-                "grimlatest" -> {
-                    val packet = event.packet
-                    if (packet is S19PacketEntityStatus && onVelocity.equals("PacketDamage", true)) {
-                        val player = packet.getEntity(mc.theWorld)
-                        if (player != mc.thePlayer || packet.opCode != 2.toByte()) 
-                            return
-                        canCancel = true
-                    }
-
-                    if (packet is S12PacketEntityVelocity && packet.entityID == mc.thePlayer.entityId && canCancel) {
-                        event.cancelEvent()
-                        canCancel = false
-                        canSpoof = true
                     }
                 }
 
