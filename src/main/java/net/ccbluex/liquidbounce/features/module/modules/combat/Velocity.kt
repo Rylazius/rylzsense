@@ -91,7 +91,7 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
     }
 
     // GrimLatest
-    private val onVelocity by ListValue("OnVelocity", arrayOf("Always", "CombatManager", "PacketDamage"), defaultValue = "Always") { mode == "GrimLatest" }
+    private val onVelocity by ListValue("OnVelocity", arrayOf("Always", "CombatManager", "PacketDamage"), "Always") { mode == "GrimLatest" }
 
     // TODO: Could this be useful in other modes? (Jump?)
     // Limits
@@ -234,7 +234,7 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
             }
 
             "grimlatest" -> {
-                if (onVelocity.get().equals("Always", true) || (onVelocity.get().equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
+                if ((onVelocity.get().equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
                     canCancel = true
                 }
                 if (canSpoof) {
