@@ -91,7 +91,7 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
     }
 
     // GrimLatest
-    private val onVelocity by ListValue("OnVelocity", arrayOf("Always", "CombatManager", "PacketDamage")) { mode == "GrimLatest" }
+    private val onVelocity by ListValue("OnVelocity", arrayOf("Always", "CombatManager", "PacketDamage"), defaultValue = "Always") { mode == "GrimLatest" }
 
     // TODO: Could this be useful in other modes? (Jump?)
     // Limits
