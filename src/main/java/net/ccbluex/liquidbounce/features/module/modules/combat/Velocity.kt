@@ -234,7 +234,7 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
             }
 
             "grimlatest" -> {
-                if ((onVelocity.get().equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
+                if ((onVelocity.equals("CombatManager", true) && LiquidBounce.combatManager.inCombat)) {
                     canCancel = true
                 }
                 if (canSpoof) {
@@ -355,7 +355,7 @@ object Velocity : Module("Velocity", ModuleCategory.COMBAT) {
 
                 "grimlatest" -> {
                     val packet = event.packet
-                    if (packet is S19PacketEntityStatus && onVelocity.get().equals("PacketDamage", true)) {
+                    if (packet is S19PacketEntityStatus && onVelocity.equals("PacketDamage", true)) {
                         val player = packet.getEntity(mc.theWorld)
                         if (player != mc.thePlayer || packet.opCode != 2.toByte()) 
                             return
