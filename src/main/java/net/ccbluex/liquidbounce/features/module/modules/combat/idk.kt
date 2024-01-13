@@ -15,7 +15,6 @@ import net.ccbluex.liquidbounce.utils.MovementUtils.isOnGround
 import net.ccbluex.liquidbounce.utils.MovementUtils.speed
 import net.ccbluex.liquidbounce.utils.extensions.toDegrees
 import net.ccbluex.liquidbounce.utils.misc.RandomUtils.nextInt
-import net.ccbluex.liquidbounce.utils.timing.MSTimer
 import net.ccbluex.liquidbounce.value.BoolValue
 import net.ccbluex.liquidbounce.value.IntegerValue
 import net.minecraft.network.play.server.*
@@ -42,7 +41,7 @@ object idk : Module("idk", ModuleCategory.COMBAT) {
         flagTimer.reset()
     }
 
-    override fun onPacket(event: PacketEvent) {
+    fun onPacket(event: PacketEvent) {
         val packet = event.packet
         if (packet is S08PacketPlayerPosLook)
             flagTimer.reset()
@@ -60,7 +59,7 @@ object idk : Module("idk", ModuleCategory.COMBAT) {
         }
     }
 
-    override fun onTick(event: TickEvent) {
+    fun onTick(event: TickEvent) {
         if (!flagTimer.hasTimePassed(flagPauseValue.get().toLong())) {
             gotVelo = false
             return
