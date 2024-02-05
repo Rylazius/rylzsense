@@ -11,7 +11,7 @@ import net.ccbluex.liquidbounce.features.module.Module
 import net.ccbluex.liquidbounce.features.module.ModuleCategory
 import net.ccbluex.liquidbounce.features.module.modules.combat.KillAura
 import net.ccbluex.liquidbounce.features.module.modules.combat.KillAura.blockStatus
-import net.minusmc.liquidbounce.utils.PacketUtils
+import net.ccbluex.liquidbounce.utils.PacketUtils
 import net.minecraft.network.play.client.C09PacketHeldItemChange
 import net.ccbluex.liquidbounce.features.module.modules.player.FakeLag
 import net.ccbluex.liquidbounce.utils.ClientUtils
