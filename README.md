@@ -5,3 +5,4 @@
 [![img2](https://forthebadge.com/images/badges/works-on-my-machine.svg)](https://github.com/rylzsense/rylzsense)
 [![imgidk](https://img.shields.io/badge/discord%20server-8A2BE2)](https://discord.gg/27Eu8E8U8w)
 random ahh lb fork
+(discontinued)
